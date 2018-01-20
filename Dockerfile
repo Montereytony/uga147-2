@@ -1,7 +1,7 @@
 # to do a test build by hand (instead of the automated hub.docker.com build) you
 # can do this:
 #
-#    docker build --rm --tag ugba147-2
+#    docker build --rm --tag ugba147-2 .
 #
 #
 # Development done on my mac laptop, used these commands to push files
@@ -65,3 +65,7 @@ RUN pip install scikit-neuralnetwork
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/webshot_0.5.0.tar.gz',repos=NULL)"
 
 RUN pip install jupyter_contrib_nbextensions
+
+RUN jupyter nbextension install --py widgetsnbextension --sys-prefix
+RUN jupyter nbextension enable  --py widgetsnbextension --sys-prefix 
+RUN jupyter nbextensions_configurator enable --user
