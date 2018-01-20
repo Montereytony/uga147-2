@@ -2,6 +2,19 @@
 # can do this:
 #
 #    docker build --rm --tag ugba147-2
+#
+#
+# Development done on my mac laptop, used these commands to push files
+# to the github:
+#
+#  git status
+#  git add DOCKERFILE
+#  git status
+#  git commit -m "added nbextensions for class and moved to a new repository"
+#  git push
+#
+#
+#
 
 FROM jupyter/datascience-notebook
 
