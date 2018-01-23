@@ -68,6 +68,11 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/webshot
 
 RUN pip install jupyter_contrib_nbextensions
 
+#
+# NB extensions is not working when running it in jupyterhub kubernetes so adding this next line
+#
+RUN conda install -c conda-forge jupyter_contrib_nbextensions
+
 RUN jupyter nbextension install --py widgetsnbextension --sys-prefix
 RUN jupyter nbextension enable  --py widgetsnbextension --sys-prefix 
-RUN jupyter nbextensions_configurator enable --user
+RUN jupyter nbextensions_configurator enable 
