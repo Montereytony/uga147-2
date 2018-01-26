@@ -1,78 +1,107 @@
 #
 #
+#
 # to do a test build by hand (instead of the automated hub.docker.com build) you
 # can do this:
 #
-#    docker build --rm --tag ugba147-2 .
+#    docker build --rm --tag ds-test .
 #
+# git status
+# git commit -m "comments Ubuntu and R to 3.4.2 "
+# git push
 #
-# Development done on my mac laptop, used these commands to push files
-# to the github:
-#
-#  git status
-#  git add Dockerfile
-#  git status
-#  git commit -m "added nbextensions for class and moved to a new repository"
-#  git push
-#
-#
-#
+
 
 FROM jupyter/datascience-notebook
 
 USER root
 
+ENV DEBIAN_FRONTEND noninteractive
+
+# Let's do updates first and install some needed libraries and utilites
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+RUN apt-get update -y  && apt-get dist-upgrade -y
+RUN apt install build-essential libssl-dev libffi-dev python-dev  lib32ncurses5-dev -y
+# gtar was used by pandoc so we need this
 RUN ln -s /bin/tar /bin/gtar
 RUN /usr/bin/apt-get install unzip
 RUN /usr/bin/wget https://github.com/jgm/pandoc/releases/download/2.1/pandoc-2.1-1-amd64.deb
 RUN /usr/bin/dpkg -i pandoc-2.1-1-amd64.deb
 RUN rm pandoc-2.1-1-amd64.deb
 
-USER jovyan
+#
+# Upgrade R 3.4.2 now
+#
 
-#RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/htmlwidgets_0.9.tar.gz',repos=NULL)"
-#RUN conda install r-htmlwidgets
-
+RUN conda update -c r r-base
 
 RUN conda install \
-    r-htmlwidgets \
- 	r-GGally \
- 	r-mclust \
- 	r-gridExtra \
- 	r-e1071 \
- 	r-rgl \
- 	r-xlsxjars \
- 	r-xlsx \
- 	r-rJava \
- 	r-pracma \
- 	ipython \
- 	numpy \
- 	pandas \
- 	plotnine \
- 	matplotlib \
- 	seaborn \
-    r-aer  \
-    r-png \
-    phantomjs 
+	gcc_linux-64 \
+	gfortran_linux-64 \
+	r-essentials \
+	r-htmlwidgets \
+	r-gridExtra \
+	r-e1071 \
+	r-rgl \
+	r-xlsxjars \
+	r-xlsx \
+	r-rJava \
+	ipython \
+	r-aer  \
+	r-png \
+	r-devtools \
+	r-digest \
+	r-evaluate \ 
+	r-memoise  \
+	r-withr  \
+	r-irdisplay \
+	r-r6  \
+	r-irkernel \
+	r-jsonlite\
+	r-lubridate\
+	r-magrittr\
+	r-pbdzmq \
+	r-rcpp \
+	r-repr \
+	r-stringi\
+	r-stringr  \
+	r-processx  
 
-
-RUN Rscript -e "install.packages('https://ftp.osuosl.org/pub/cran/src/contrib/wordcloud2_0.2.1.tar.gz',repos=NULL)"
-RUN conda install -c https://conda.anaconda.org/amueller wordcloud
-RUN conda install -c statsmodels statsmodels
-RUN conda install -c bioconda r-ggdendro 
-
+RUN conda install -c \
+    asmeurer \
+    numpy \
+    pandas \
+    plotnine \
+    matplotlib \
+    seaborn \
+    phantomjs  \
+    statsmodels \
+    statsmodels \
+    python-utils 
 
 RUN pip install scikit-neuralnetwork
 
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/webshot_0.5.0.tar.gz',repos=NULL)"
+RUN conda install -c https://conda.anaconda.org/amueller wordcloud
 
-RUN pip install jupyter_contrib_nbextensions
+# The following would not do a conda install so we compile from source
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/DRR_0.0.3.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://ftp.osuosl.org/pub/cran/src/contrib/wordcloud2_0.2.1.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/webshot_0.5.0.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/mclust_5.4.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/pracma_2.1.1.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/ggdendro_0.1-20.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/GGally_1.3.2.tar.gz',repos=NULL)"
+
 
 #
 # NB extensions is not working when running it in jupyterhub kubernetes so adding this next line
 #
 RUN conda install -c conda-forge jupyter_contrib_nbextensions
-
 RUN jupyter nbextension install --py widgetsnbextension --sys-prefix
-RUN jupyter nbextension enable  --py widgetsnbextension --sys-prefix 
-RUN jupyter nbextensions_configurator enable 
+RUN jupyter nbextension enable  --py widgetsnbextension --sys-prefix
+
+#
+# This should allow users to turn off extension if they do not want them.
+#
+USER jovyan
+RUN jupyter nbextensions_configurator enable
