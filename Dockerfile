@@ -46,7 +46,6 @@ RUN conda install \
 	r-xlsxjars \
 	r-xlsx \
 	r-rJava \
-	ipython \
 	r-aer  \
 	r-png \
 	r-devtools \
@@ -67,8 +66,8 @@ RUN conda install \
 	r-stringr  \
 	r-processx  
 
-RUN conda install -c \
-    asmeurer \
+RUN conda install \
+	ipython \
     numpy \
     pandas \
     plotnine \
@@ -100,6 +99,10 @@ RUN conda install -c conda-forge jupyter_contrib_nbextensions
 RUN jupyter nbextension install --py widgetsnbextension --sys-prefix
 RUN jupyter nbextension enable  --py widgetsnbextension --sys-prefix
 
+RUN conda install \
+    r-tidyverse \
+    r-readr
+RUN conda install -c conda-forge csvkit=1.0.2 
 #
 # This should allow users to turn off extension if they do not want them.
 #
