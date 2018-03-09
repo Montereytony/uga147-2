@@ -26,7 +26,9 @@ RUN rm pandoc-2.1-1-amd64.deb
 #
 # Upgrade R 3.4.2 now
 #
-
+#RUN pip uninstall ipykernel
+#RUN pip install ipykernel
+RUN conda clean -tipsy
 RUN conda update -c r r-base
 RUN conda install \
         gcc_linux-64 \
@@ -58,22 +60,22 @@ RUN conda install \
         r-stringi\
         r-stringr\
         r-processx\
-	r-tidyverse\
-	r-readr
+        r-tidyverse\
+        r-readr 
 
+RUN conda install -c r r-igraph 
 
 RUN conda install \
         ipython \
-	numpy \
+        numpy \
         pandas \
-	plotnine \
-	matplotlib \
-	seaborn \
-	phantomjs  \
-	statsmodels \
-	statsmodels \
-	python-utils
-
+    	plotnine \
+    	matplotlib \
+    	seaborn \
+    	phantomjs  \
+    	statsmodels \
+    	statsmodels \
+    	python-utils
 
 RUN conda install -c https://conda.anaconda.org/amueller wordcloud
 
@@ -99,36 +101,30 @@ RUN jupyter nbextension install --py widgetsnbextension --sys-prefix
 RUN jupyter nbextension enable  --py widgetsnbextension --sys-prefix
 
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/openxlsx_4.0.17.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/rio_0.5.5.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/rio_0.5.9.tar.gz',repos=NULL)"
 
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/survey_3.33.tar.gz',repo=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/coda_0.19-1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/mvtnorm_1.0-7.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/sfsmisc_1.1-1.tar.gz',repos=NULL)"
+#RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/sfsmisc_1.1-1.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/sfsmisc_1.1-2.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/polycor_0.7-9.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/CDM_6.0-101.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/TAM_2.8-21.tar.gz',repos=NULL)"
+#RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/CDM_6.0-101.tar.gz',repos=NULL)"
+#RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/TAM_2.8-21.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/CDM_6.1-10.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/TAM_2.9-35.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/mitools_2.3.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/mice_2.46.0.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/mvtnorm_1.0-7.tar.gz',repos=NULL)"
 
 
 
-#
-# This should allow users to turn off extension if they do not want them.
-#
-USER jovyan
-RUN pip install scikit-neuralnetwork
-RUN jupyter nbextensions_configurator enable
-
-
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/GPArotation_2014.11-1.tar.gz',repo=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/permute_0.9-4.tar.gz',repo=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/vegan_2.4-6.tar.gz',repo=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/pbivnorm_0.6.0.tar.gz',repo=NULL)"
-#
+
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/numDeriv_2016.8-1.tar.gz',repo=NULL)"
-#RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/mirt_1.26.3.tar.gz',repo=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/Archive/mirt/mirt_1.20.1.tar.gz',repo=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/lavaan_0.5-23.1097.tar.gz',repo=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/lavaan.survey_1.1.3.1.tar.gz',repo=NULL)"
@@ -152,7 +148,9 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/withr_2
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/caret_6.0-78.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/neuralnet_1.33.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/irlba_2.3.2.tar.gz',repos=NULL)"
-USER root
-RUN conda install -c r r-igraph 
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/kknn_1.3.1.tar.gz',repos=NULL)"
+#
+# This should allow users to turn off extension if they do not want them.
+#
 USER jovyan
+RUN jupyter nbextensions_configurator enable
