@@ -155,3 +155,4 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/irlba_2
 USER root
 RUN conda install -c r r-igraph 
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/kknn_1.3.1.tar.gz',repos=NULL)"
+USER jovyan
