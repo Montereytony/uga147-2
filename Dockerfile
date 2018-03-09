@@ -151,3 +151,7 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/recipes
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/withr_2.1.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/caret_6.0-78.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/neuralnet_1.33.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/irlba_2.3.2.tar.gz',repos=NULL)"
+USER root
+RUN conda install -c r r-igraph 
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/kknn_1.3.1.tar.gz',repos=NULL)"
