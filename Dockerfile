@@ -157,6 +157,8 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gdata_2
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gplots_3.0.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/ROCR_1.0-7.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/MLmetrics_1.1.1.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/MLmetrics_1.1.1.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/dummies_1.5.6.tar.gz',repos=NULL)"
 #
 # This should allow users to turn off extension if they do not want them.
 #
