@@ -9,9 +9,10 @@
 #
 
 
+USER root
+
 FROM jupyter/datascience-notebook
 
-USER root
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -44,9 +45,9 @@ RUN conda install \
         r-rgl \
         r-xlsxjars \
         r-xlsx \
-        r-rJava \
         r-aer  \
         r-png \
+        r-rJava \
         r-devtools \
         r-digest \
         r-evaluate \
@@ -159,6 +160,39 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/ROCR_1.
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/MLmetrics_1.1.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/MLmetrics_1.1.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/dummies_1.5.6.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/slam_0.1-42.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/NLP_0.1-11.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/tm_0.7-3.tar.gz',repos=NULL)"
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y  software-properties-common && \
+    add-apt-repository ppa:webupd8team/java -y && \
+    apt-get update && \
+    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
+    apt-get install -y oracle-java8-installer && \
+    apt-get clean \
+    apt autoremove
+#####Important########
+##To set Oracle JDK8 as default, install the "oracle-java8-set-default" package.
+##E.g.: sudo apt install oracle-java8-set-default
+##On Ubuntu systems, oracle-java8-set-default is most probably installed
+##automatically with this package.
+######################
+
+#RUN  apt install oracle-java8-set-default
+#RUN export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server
+#RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/rJava_0.9-9.tar.gz',repos=NULL)"
+
+
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/clipr_0.4.0.tar.gz',repos=NULL)"
+RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$JAVA_LD_LIBRARY_PATH
+RUN R CMD javareconf
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWekajars_3.9.2-1.tar.gz',repos=NULL)"
+#RUN conda install -c glaxosmithkline r-rwekajars 
+
+#RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWekajars_3.9.2-1.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWeka_0.4-37.tar.gz',repos=NULL)"
 #
 # This should allow users to turn off extension if they do not want them.
 #
