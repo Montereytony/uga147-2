@@ -8,14 +8,10 @@
 # git push
 #
 
-
+FROM jupyter/datascience-notebook
 USER root
 
-FROM jupyter/datascience-notebook
-
-
 ENV DEBIAN_FRONTEND noninteractive
-
 # Let's do updates first and install some needed libraries and utilites
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get update -y  && apt-get dist-upgrade -y
