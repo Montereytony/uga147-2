@@ -189,6 +189,7 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWekaja
 
 #RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWekajars_3.9.2-1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWeka_0.4-37.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/rpart.plot_2.1.2.tar.gz',repos=NULL)"
 #
 # This should allow users to turn off extension if they do not want them.
 #
