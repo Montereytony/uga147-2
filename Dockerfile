@@ -8,10 +8,22 @@
 # git push
 #
 
-FROM jupyter/datascience-notebook
-USER root
+FROM jupyter/datascience-notebook:latest
 
+USER root
 ENV DEBIAN_FRONTEND noninteractive
+
+# Install.
+RUN \
+  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+  apt-get update && \
+  apt-get -y upgrade && \
+  apt-get install -y build-essential  && \
+ apt-get install -y software-properties-common && \
+ apt-get install -y apt-utils && \
+  apt-get install -y byobu curl git htop man unzip vim wget && \
+  rm -rf /var/lib/apt/lists/*
+
 # Let's do updates first and install some needed libraries and utilites
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get update -y  && apt-get dist-upgrade -y
@@ -19,6 +31,8 @@ RUN apt install build-essential libssl-dev libffi-dev python-dev  lib32ncurses5-
 # gtar was used by pandoc so we need this
 RUN ln -s /bin/tar /bin/gtar
 RUN /usr/bin/apt-get install unzip
+RUN apt-get update -y
+RUN apt-get remove r-base-core -y && apt-get install r-base-core -y
 RUN /usr/bin/wget https://github.com/jgm/pandoc/releases/download/2.1/pandoc-2.1-1-amd64.deb
 RUN /usr/bin/dpkg -i pandoc-2.1-1-amd64.deb
 RUN rm pandoc-2.1-1-amd64.deb
@@ -28,7 +42,7 @@ RUN rm pandoc-2.1-1-amd64.deb
 #
 #RUN pip uninstall ipykernel
 #RUN pip install ipykernel
-RUN conda clean -tipsy
+#RUN conda clean -tipsy
 RUN conda update -c r r-base
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/pbdZMQ_0.3-2.tar.gz',repos=NULL)"
 RUN conda install \
@@ -132,31 +146,32 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/sirt_2.
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/miceadds_2.9-15.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RcppRoll_0.2.2.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/DEoptimR_1.0-8.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/robustbase_0.92-8.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/robustbase_0.93-0.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gower_0.1.2.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/kernlab_0.9-25.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/CVST_0.2-1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/DRR_0.0.3.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.rstudio.com/src/contrib/SQUAREM_2017.10-1.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/lava_1.6.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/prodlim_1.6.1.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/ddalpha_1.3.1.1.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/lava_1.6.1.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/prodlim_2018.04.18.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/ddalpha_1.3.3.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/dimRed_0.1.0.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/ipred_0.9-6.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/recipes_0.1.2.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/withr_2.1.1.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/caret_6.0-78.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/withr_2.1.2.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/caret_6.0-79.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/neuralnet_1.33.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/irlba_2.3.2.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/kknn_1.3.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gtools_3.5.0.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gdata_2.18.0.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/caTools_1.17.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gplots_3.0.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/ROCR_1.0-7.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/MLmetrics_1.1.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/MLmetrics_1.1.1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/dummies_1.5.6.tar.gz',repos=NULL)"
-RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/slam_0.1-42.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/slam_0.1-43.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/NLP_0.1-11.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/tm_0.7-3.tar.gz',repos=NULL)"
 
@@ -190,6 +205,9 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWekaja
 #RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWekajars_3.9.2-1.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWeka_0.4-37.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/rpart.plot_2.1.2.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gbm_2.1.3.tar.gz',repos=NULL)"
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+RUN apt-get update -y  && apt-get dist-upgrade -y
 #
 # This should allow users to turn off extension if they do not want them.
 #
