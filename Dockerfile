@@ -41,7 +41,6 @@ RUN rm pandoc-2.1-1-amd64.deb
 #RUN pip uninstall ipykernel
 #RUN pip install ipykernel
 #RUN conda clean -tipsy
-RUN conda update -c r r-base
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/pbdZMQ_0.3-2.tar.gz',repos=NULL)"
 RUN conda install \
         gcc_linux-64 \
