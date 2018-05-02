@@ -9,20 +9,18 @@
 #
 
 FROM jupyter/datascience-notebook:latest
-
 USER root
 ENV DEBIAN_FRONTEND noninteractive
-
 # Install.
-RUN \
-  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
-  apt-get update && \
-  apt-get -y upgrade && \
-  apt-get install -y build-essential  && \
- apt-get install -y software-properties-common && \
- apt-get install -y apt-utils && \
-  apt-get install -y byobu curl git htop man unzip vim wget && \
-  rm -rf /var/lib/apt/lists/*
+#RUN \
+#  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+#  apt-get update && \
+#  apt-get -y upgrade && \
+#  apt-get install -y build-essential  && \
+# apt-get install -y software-properties-common && \
+# apt-get install -y apt-utils && \
+#  apt-get install -y byobu curl git htop man unzip vim wget && \
+#  rm -rf /var/lib/apt/lists/*
 
 # Let's do updates first and install some needed libraries and utilites
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
@@ -206,8 +204,6 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWekaja
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWeka_0.4-37.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/rpart.plot_2.1.2.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gbm_2.1.3.tar.gz',repos=NULL)"
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
-RUN apt-get update -y  && apt-get dist-upgrade -y
 #
 # This should allow users to turn off extension if they do not want them.
 #
