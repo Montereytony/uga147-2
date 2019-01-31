@@ -97,6 +97,7 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/ggdendr
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/reshape_0.8.7.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/prettyunits_1.0.2.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/progress_1.2.0.tar.gz',repos=NULL)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/reshape_0.8.8.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/GGally_1.4.0.tar.gz',repos=NULL)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/multiwayvcov_1.2.3.tar.gz',repos=NULL)"
 
