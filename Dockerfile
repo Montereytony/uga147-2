@@ -197,6 +197,7 @@ RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/RWeka_0
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/rpart.plot_2.1.2.tar.gz',repos=NULL,dependencies = TRUE)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/gbm_2.1.5.tar.gz',repos=NULL,dependencies = TRUE)"
 RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/zipcode_1.0.tar.gz',repos=NULL,dependencies = TRUE)"
+RUN Rscript -e "install.packages('https://cran.r-project.org/src/contrib/caret_6.0-81.tar.gz',repos=NULL,dependencies = TRUE)"
 #
 # This should allow users to turn off extension if they do not want them.
 #
